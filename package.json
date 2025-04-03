@@ -3,15 +3,15 @@
   "version": "1.0.0",
   "type": "module",
   "license": "MIT",
-"scripts": {
-  "dev": "tsx server/index.ts",
-  "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-  "build:bot": "esbuild server/bot.ts --platform=node --packages=external --bundle --format=cjs --outfile=dist/bot.cjs",
-  "start": "NODE_ENV=production node dist/index.js",
-  "start:bot": "NODE_ENV=production node dist/bot.cjs",
-  "check": "tsc",
-  "db:push": "drizzle-kit push"
-},
+  "scripts": {
+    "dev": "tsx server/index.ts",
+    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
+    "build:bot": "esbuild server/bot.ts --platform=node --packages=external --bundle --format=cjs --outfile=dist/bot.cjs",
+    "start": "NODE_ENV=production node dist/index.js",
+    "start:bot": "NODE_ENV=production node dist/bot.cjs",
+    "check": "tsc",
+    "db:push": "drizzle-kit push"
+  },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
     "@jridgewell/trace-mapping": "^0.3.25",
@@ -61,7 +61,7 @@
     "lightweight-charts": "^5.0.5",
     "lucide-react": "^0.453.0",
     "memorystore": "^1.6.7",
-    "node-telegram-bot-api": "^0.66.0",
+    "node-telegram-bot-api": "^0.63.0",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "react": "^18.3.1",
@@ -94,13 +94,13 @@
     "@types/ws": "^8.5.13",
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.20",
-    "drizzle-kit": "^0.30.4",
+    "drizzle-kit": "^0.19.1",
     "esbuild": "^0.25.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
     "tsx": "^4.19.1",
     "typescript": "5.6.3",
-    "vite": "^5.4.14"
+    "vite": "^6.2.4"
   },
   "optionalDependencies": {
     "bufferutil": "^4.0.8"
