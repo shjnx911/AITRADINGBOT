@@ -1,0 +1,15 @@
+FROM ubuntu:22.04 AS ta-lib-builder
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential wget tar libtool automake python3-dev && rm -rf /var/lib/apt/lists/*
+WORKDIR /build
+RUN wget http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz && \
+    tar -xzf ta-lib-0.4.0-src.tar.gz && \
+    cd ta-lib && \
+    ./configure --prefix=/usr --libdir=/usr/lib && \
+    make && \
+    make install
+FROM ubuntu:22.04 AS ta-lib-base
+COPY --from=ta-lib-builder /usr/lib/libta_lib.so.0 /usr/lib/
+COPY --from=ta-lib-builder /usr/include/ta-lib /usr/include/ta-lib/
+RUN ldconfig
+RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-pip python3-venv build-essential python3-dev && rm -rf /var/lib/apt/lists/*
+ENV PATH="/app/venv/bin:$PATH:/usr/local/lib"

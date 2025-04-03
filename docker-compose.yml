@@ -1,0 +1,111 @@
+version: '3.8'
+
+services:
+  app:
+    profiles:
+      - development
+    build:
+      context: .
+      target: development
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/trading_bot
+      - TZ=UTC
+    depends_on:
+      - db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    networks:
+      - default
+
+  db:
+    image: postgres:16-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=trading_bot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - default
+
+  app-prod:
+    build:
+      context: .
+      target: production
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/trading_bot
+      - TZ=UTC
+    depends_on:
+      - db
+    restart: always
+    devices:
+      - /dev/dri:/dev/dri
+    profiles:
+      - prod
+    networks:
+      - default
+
+  bot:
+    build:
+      context: .
+      target: bot-only
+    environment:
+      - BOT_ONLY=true
+      - NODE_ENV=production
+      - DATABASE_URL=postgres://postgres:postgres@db:5432/trading_bot
+      - TZ=UTC
+    depends_on:
+      - db
+    restart: always
+    devices:
+      - /dev/dri:/dev/dri
+    profiles:
+      - bot
+    command: ["node", "dist/bot.cjs"]
+    networks:
+      - default
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+    profiles:
+      - prod
+      - cache
+    networks:
+      - default
+
+networks:
+  default:
+    external: true
+    name: tradecraftai_default
+
+volumes:
+  postgres_data:
+  redis_data:
+  grafana_data:
+  prometheus_data:

@@ -1,0 +1,6 @@
+numpy
+pandas
+tensorflow-rocm
+scikit-learn
+websocket-client
+psycopg2-binary

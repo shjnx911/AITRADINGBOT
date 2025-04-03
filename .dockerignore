@@ -1,0 +1,47 @@
+# Development files
+node_modules
+npm-debug.log
+.git
+.gitignore
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Build artifacts
+build
+dist
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Test files
+**/*.test.js
+**/*.spec.js
+coverage
+
+# Documentation
+README.md
+CHANGELOG.md
+docs
+
+# Temporary files
+.DS_Store
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+tmp
+temp

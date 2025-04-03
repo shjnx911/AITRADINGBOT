@@ -1,0 +1,41 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+  # Attach these labels to any time series or alerts when communicating with
+  # external systems (federation, remote storage, Alertmanager).
+  external_labels:
+    monitor: 'crypto-trading-bot'
+
+# Load rules once and periodically evaluate them.
+rule_files:
+  # - "alert.rules"
+
+# A scrape configuration containing endpoints to scrape.
+scrape_configs:
+  # GPU metrics monitoring
+  - job_name: 'rocm-smi'
+    static_configs:
+      - targets: ['rocm-smi-exporter:9400']
+    
+  # Application metrics
+  - job_name: 'trading-bot'
+    metrics_path: '/metrics'
+    static_configs:
+      - targets: ['app:3000']
+        labels:
+          service: 'trading-bot-app'
+      
+      - targets: ['bot:3000']
+        labels:
+          service: 'trading-bot-backend'
+
+  # Database metrics
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres-exporter:9187']
+
+  # Node.js app metrics
+  - job_name: 'nodejs'
+    static_configs:
+      - targets: ['app:9464', 'bot:9464']
